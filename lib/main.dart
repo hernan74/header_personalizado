@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:header_personalizado/pages/header_con_sliver.dart';
-import 'package:header_personalizado/pages/header_personalizado.dart';
 
 void main() => runApp(MyApp());
 

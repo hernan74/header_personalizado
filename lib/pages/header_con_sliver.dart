@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:header_personalizado/pages/header_personalizado.dart';
 import 'package:header_personalizado/wiget/item.dart';
 
 class HeaderConSliver extends StatelessWidget {
@@ -84,7 +85,11 @@ class HeaderConSliver extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverPersistentHeader(
-              floating: true, delegate: _SliverCustomHeaderDelegate()),
+              floating: true,
+              delegate: _SliverCustomHeaderDelegate(
+                  minHeight: 300.0,
+                  maxHeight: 300.0,
+                  child: HeaderPageWidget())),
           SliverList(delegate: SliverChildListDelegate(items))
         ],
       ),
@@ -93,22 +98,32 @@ class HeaderConSliver extends StatelessWidget {
 }
 
 class _SliverCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
+  final double minHeight;
+  final double maxHeight;
+  final Widget child;
 
+  _SliverCustomHeaderDelegate(
+      {@required this.minHeight,
+      @required this.maxHeight,
+      @required this.child});
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-  
-    throw UnimplementedError();
+    return SizedBox(
+      child: child,
+    );
   }
 
   @override
-  double get maxExtent => throw UnimplementedError();
+  double get maxExtent => (minHeight > maxHeight) ? minHeight : maxHeight;
 
   @override
-  double get minExtent => throw UnimplementedError();
+  double get minExtent => (maxHeight < minHeight) ? maxHeight : minHeight;
 
   @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    throw UnimplementedError();
+  bool shouldRebuild(_SliverCustomHeaderDelegate oldDelegate) {
+    return maxHeight != oldDelegate.maxHeight ||
+        minHeight != oldDelegate.minHeight ||
+        child != oldDelegate.child;
   }
 }
